@@ -1,6 +1,6 @@
 FROM nextcloud:fpm-alpine
 
-RUN apk add --no-cache supervisor \
+RUN apk add --no-cache supervisor samba-client \
   && mkdir /var/log/supervisord /var/run/supervisord
 
 COPY supervisord.conf /etc/supervisor/supervisord.conf
