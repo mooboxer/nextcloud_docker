@@ -1,6 +1,7 @@
 # Nextcloud Docker
 
 ![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/mooboxer/nextcloud_docker?style=plastic)
+![Docker Pulls](https://img.shields.io/docker/pulls/mooboxer/nextcloud_docker?style=plastic)
 
 This Docker image is based on the official Nextcloud image but includes advanced features.
 
