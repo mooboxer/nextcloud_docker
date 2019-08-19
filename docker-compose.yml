@@ -1,0 +1,48 @@
+version: '2'
+
+services:
+  clouddb:
+    image: mariadb
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    restart: always
+    logging:
+      driver: journald
+    volumes:
+      - db:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=SuperSecret
+      - MYSQL_PASSWORD=secret
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+    network_mode: bridge
+
+  cloudweb:
+    image: mooboxer/nextcloud_docker
+    ports:
+      - 8090:80
+    logging:
+      driver: journald
+    depends_on:
+      - clouddb
+    volumes:
+      - web:/var/www/html
+    expose:
+      - "80"
+    restart: always
+    links:
+      - clouddb
+    environment:
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_PASSWORD=secret
+      - MYSQL_HOST=db
+      - VIRTUAL_HOST=cloud.moo-box.net
+      - LETSENCRYPT_HOST=cloud.moo-box.net
+      - LETSENCRYPT_EMAIL=info@moo-box.net
+      - SSL_POLICY=Mozilla-Modern
+    network_mode: bridge
+
+volumes:
+  web:
+  db:
+

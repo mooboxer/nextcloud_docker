@@ -1,15 +1,5 @@
-FROM nextcloud:fpm-alpine
+FROM nextcloud:apache
 
-RUN apk add --no-cache supervisor samba-client \
-  && mkdir /var/log/supervisord /var/run/supervisord
+RUN apt-get update && apt-get install -y smbclient \
+  && rm -rf /var/lib/apt/lists/*
 
-COPY supervisord.conf /etc/supervisord.conf
-
-RUN adduser -D -g '' cloud
-RUN chown cloud /etc/supervisord.conf
-RUN chown cloud /var/log/supervisord /var/run/supervisord
-USER cloud
-
-ENV NEXTCLOUD_UPDATE=1
-
-CMD ["/usr/bin/supervisord"]
